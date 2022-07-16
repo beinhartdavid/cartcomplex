@@ -1,40 +1,43 @@
-export default function Home() {
-  return (
-    <div className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center">
-          <h2 className="text-base text-red-500 font-semibold">Good Morning</h2>
-          <p className="mt-2 text-blue-800 text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">Welcome to KindaCode.com</p>
+import Head from 'next/head';
+import { table, minifyRecords } from './api/utils/airtable';
+import Todo from '../components/Todo';
+import Navbar from '../components/Navbar';
+import { TodosContext } from '../contexts/TodosContext';
+import { useEffect,useContext } from 'react';
+export default function Home({ initialTodos }) {
+  const {todos,setTodos} = useContext(TodosContext);
+  useEffect(()=> {
+    setTodos(initialTodos)
+  },[]);
+
+    return (
+        <div className="max-w-xl m-auto p-2">
+            <Head>
+                <title>My Todo CRUD App</title>
+            </Head>
+
+            <main>
+                <Navbar />
+                <>
+                    <ul>
+                        {initialTodos &&
+                            initialTodos.map((todo) => (
+                                <Todo todo={todo} key={todo.id} />
+                            ))}
+                    </ul>
+                </>
+            </main>
         </div>
+    );
+}
 
-        <div className="mt-10 space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-          <div
-            className="bg-amber-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-red-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-green-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-purple-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-  )
+export async function getServerSideProps(context) {
+    let todos = await table
+        .select({ })
+        .firstPage();
+    return {
+        props: {
+            initialTodos: minifyRecords(todos),
+        },
+    };
 }
