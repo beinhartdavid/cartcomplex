@@ -1,13 +1,14 @@
-import '../styles/globals.css'
-import 'tailwindcss/tailwind.css';
-import {UseProvider} from '@auth0/nextjs-auth0'
 
+
+import '../styles/index.css';
 function MyApp({ Component, pageProps }) {
-
-  return 
-  <UseProvider>
-  <Component {...pageProps} />
-  </UseProvider>
+    return (
+        
+            <div className="container mx-auto my-10 max-w-xl">
+                <Component {...pageProps} />
+            </div>
+        
+    );
 }
 
-export default MyApp
+export default MyApp;
