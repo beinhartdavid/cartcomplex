@@ -13,7 +13,7 @@ export default function TodoForm() {
         <form className="form my-6" onSubmit={handleSubmit}>
             <div className="flex flex-col text-sm mb-2">
                 <label htmlFor="todo" className="font-bold mb-2 text-gray-800 ">
-                    Todo
+                    Items:
                 </label>
                 <input
                     type="text"
