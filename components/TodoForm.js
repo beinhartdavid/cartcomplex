@@ -19,7 +19,7 @@ export default function TodoForm() {
                     type="text"
                     name="todo"
                     value={todo}
-                    placeholder="ex. Learn about authentication in Next.js"
+                    placeholder="Add items you want to buy"
                     className=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500 rounded-lg "
                     onChange={(e) => setTodo(e.target.value)}
                 />
