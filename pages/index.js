@@ -10,6 +10,7 @@ export default function Home({ initialTodos, user }) {
     const { todos, setTodos } = useContext(TodosContext);
     useEffect(() => {
         setTodos(initialTodos);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
