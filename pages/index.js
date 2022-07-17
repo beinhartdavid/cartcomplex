@@ -15,7 +15,7 @@ export default function Home({ initialTodos, user }) {
     return (
         <div className="max-w-xl m-auto p-2">
             <Head>
-                <title>My Todo CRUD App</title>
+                <title>Complex?</title>
             </Head>
 
             <main>
@@ -23,7 +23,7 @@ export default function Home({ initialTodos, user }) {
                     <div className="flex items-center justify-between py-4  ">
                         <div className="flex justify-between items-center">
                             <div className="text-2xl font-bold text-gray-800 md:text-3xl">
-                                <a href="#">My Todos</a>
+                                <a href="#">Cart Complex</a>
                             </div>
                         </div>
                         <div className="flex">
@@ -57,7 +57,7 @@ export default function Home({ initialTodos, user }) {
                     </>
                 ) : (
                     <p className="text-center mt-4">
-                        Please login to save todos!
+                        Please login to add items
                     </p>
                 )}
             </main>

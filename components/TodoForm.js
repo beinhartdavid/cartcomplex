@@ -13,13 +13,13 @@ export default function TodoForm() {
         <form className="form my-6" onSubmit={handleSubmit}>
             <div className="flex flex-col text-sm mb-2">
                 <label htmlFor="todo" className="font-bold mb-2 text-gray-800 ">
-                    Todo
+                    Items:
                 </label>
                 <input
                     type="text"
                     name="todo"
                     value={todo}
-                    placeholder="ex. Learn about authentication in Next.js"
+                    placeholder="Add items you want to buy"
                     className=" appearance-none border border-gray-200 p-2 focus:outline-none focus:border-gray-500 rounded-lg "
                     onChange={(e) => setTodo(e.target.value)}
                 />
