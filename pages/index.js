@@ -1,15 +1,17 @@
 import Head from 'next/head';
-import { table, minifyRecords } from './api/utils/airtable';
+import { table, minifyRecords } from './api/utils/Airtable';
 import Todo from '../components/Todo';
 import { useEffect, useContext } from 'react';
 import { TodosContext } from '../contexts/TodosContext';
 import TodoForm from '../components/TodoForm';
 import { getSession } from '@auth0/nextjs-auth0';
+import Link from 'next/link';
 
 export default function Home({ initialTodos, user }) {
     const { todos, setTodos } = useContext(TodosContext);
     useEffect(() => {
         setTodos(initialTodos);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -28,19 +30,19 @@ export default function Home({ initialTodos, user }) {
                         </div>
                         <div className="flex">
                             {user ? (
-                                <a
+                                <Link
                                     href="/api/auth/logout"
                                     className="rounded bg-blue-500 hover:bg-blue-600 text-white py-2 px-4"
                                 >
                                     Logout
-                                </a>
+                                </Link>
                             ) : (
-                                <a
+                                <Link
                                     href="/api/auth/login"
                                     className="rounded bg-blue-500 hover:bg-blue-600 text-white py-2 px-4"
                                 >
                                     Login
-                                </a>
+                                </Link>
                             )}
                         </div>
                     </div>
