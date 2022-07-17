@@ -1,40 +1,82 @@
-export default function Home() {
-  return (
-    <div className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center">
-          <h2 className="text-base text-red-500 font-semibold">Good Morning</h2>
-          <p className="mt-2 text-blue-800 text-3xl leading-8 font-extrabold tracking-tight sm:text-4xl">Welcome to KindaCode.com</p>
+import Head from 'next/head';
+import { table, minifyRecords } from './api/utils/airtable';
+import Todo from '../components/Todo';
+import { useEffect, useContext } from 'react';
+import { TodosContext } from '../contexts/TodosContext';
+import TodoForm from '../components/TodoForm';
+import { getSession } from '@auth0/nextjs-auth0';
+
+export default function Home({ initialTodos, user }) {
+    const { todos, setTodos } = useContext(TodosContext);
+    useEffect(() => {
+        setTodos(initialTodos);
+    }, []);
+
+    return (
+        <div className="max-w-xl m-auto p-2">
+            <Head>
+                <title>My Todo CRUD App</title>
+            </Head>
+
+            <main>
+                <nav>
+                    <div className="flex items-center justify-between py-4  ">
+                        <div className="flex justify-between items-center">
+                            <div className="text-2xl font-bold text-gray-800 md:text-3xl">
+                                <a href="#">My Todos</a>
+                            </div>
+                        </div>
+                        <div className="flex">
+                            {user ? (
+                                <a
+                                    href="/api/auth/logout"
+                                    className="rounded bg-blue-500 hover:bg-blue-600 text-white py-2 px-4"
+                                >
+                                    Logout
+                                </a>
+                            ) : (
+                                <a
+                                    href="/api/auth/login"
+                                    className="rounded bg-blue-500 hover:bg-blue-600 text-white py-2 px-4"
+                                >
+                                    Login
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </nav>
+                {user ? (
+                    <>
+                        <TodoForm />
+                        <ul>
+                            {todos &&
+                                todos.map((todo) => (
+                                    <Todo todo={todo} key={todo.id} />
+                                ))}
+                        </ul>
+                    </>
+                ) : (
+                    <p className="text-center mt-4">
+                        Please login to save todos!
+                    </p>
+                )}
+            </main>
         </div>
+    );
+}
 
-        <div className="mt-10 space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-          <div
-            className="bg-amber-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-red-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-green-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-
-          <div
-            className="bg-purple-500 cursor-pointer text-white p-4 rounded-md text-center shadow-xl">
-            <div className="mt-2 font-bold">John Doe</div>
-            <div className="font-light">Some description</div>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-  )
+export async function getServerSideProps(context) {
+    const session = await getSession(context.req, context.res);
+    let todos = [];
+    if (session?.user) {
+        todos = await table
+            .select({ filterByFormula: `userId = '${session.user.sub}'` })
+            .firstPage();
+    }
+    return {
+        props: {
+            initialTodos: minifyRecords(todos),
+            user: session?.user || null,
+        },
+    };
 }
