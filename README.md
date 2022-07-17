@@ -3,5 +3,5 @@
 ## About
 
 This read me will evolve
-pending deploy
+pending initial deploy
 
