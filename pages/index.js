@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { table, minifyRecords } from './api/utils/airtable';
+import { table, minifyRecords } from './api/utils/Airtable';
 import Todo from '../components/Todo';
 import { useEffect, useContext } from 'react';
 import { TodosContext } from '../contexts/TodosContext';
